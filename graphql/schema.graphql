@@ -1,58 +1,12 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-01-01 13:00:00`."
+scalar DateTime
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime
-    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-
-input CreateUserInput {
-    name: String! @rules(apply: ["required"])
-
-    email: String!
-        @rules(
-            apply: ["email", "required", "unique:users,email"]
-            messages: [
-                { rule: "email", message: "Invalid email format" }
-                { rule: "unique", message: "Email has already been taken" }
-            ]
-        )
-
-    password: String! @rules(apply: ["min:8", "required"]) @hash
-}
-
-input UpdateUserInput {
-    id: ID!
-
-    name: String @rules(apply: [])
-
-    email: String
-        @rules(
-            apply: ["email", "unique:users,email"]
-            messages: [
-                { rule: "email", message: "Invalid email format" }
-                { rule: "unique", message: "Email has already been taken" }
-            ]
-        )
-}
-
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
-}
-
-# User
-
-type User {
-    id: ID!
-    name: String!
-    email: String!
-    created_at: DateTime!
-    updated_at: DateTime!
-}
-
-type Mutation {
-    createUser(userData: CreateUserInput! @spread): User @create
-    updateUser(userData: UpdateUserInput! @spread): User @update
+    users: [User!]! @paginate(type: "paginator", model: "App\\Models\\User")
+    user(id: ID @eq): User @find(model: "App\\Models\\User")
 }
 
 type Mutation {
@@ -98,3 +52,4 @@ type Mutation {
         )
         @guard(with: ["api"])
 }
+
