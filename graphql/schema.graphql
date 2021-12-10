@@ -11,9 +11,7 @@ type Query {
 
 type Mutation {
     login(input: LoginInput @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve"
-        )
+        @field(resolver: "Login@resolve")
     refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve"
@@ -35,9 +33,7 @@ type Mutation {
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve"
         )
     register(input: RegisterInput @spread): RegisterResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve"
-        )
+        @field(resolver: "Register@resolve")
     socialLogin(input: SocialLoginInput! @spread): AuthPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"
@@ -52,4 +48,3 @@ type Mutation {
         )
         @guard(with: ["api"])
 }
-
