@@ -77,9 +77,14 @@ input ResendEmailVerificationInput {
 }
 
 input RegisterInput {
-    name: String!
-    email: String! @rules(apply: ["bail", "email", "unique:users,email"])
+    name: String! @rules(apply: ["required", "string"], attribute: "name")
+    email: String!
+        @rules(
+            apply: ["required", "email", "unique:users,email"]
+            attribute: "email address"
+        )
     password: String!
+        @rules(apply: ["required", "min:8"], attribute: "password")
     verification_url: VerificationUrlInput
 }
 
