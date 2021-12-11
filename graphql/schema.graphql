@@ -17,7 +17,7 @@ type Quotation {
 }
 
 type Query {
-    Quotation(show: Boolean! @where(operator: "=")): [Quotation!]! @all
+    Quotation: Quotation
 }
 
 #
