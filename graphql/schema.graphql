@@ -9,4 +9,16 @@ type Query {
     user(id: ID @eq): User @find(model: "App\\Models\\User")
 }
 
+# Quotations
+
+type Quotation {
+    quote: String!
+    author: String!
+}
+
+type Query {
+    Quotation(show: Boolean! @where(operator: "=")): [Quotation!]! @all
+}
+
+#
 #import sanctum.graphql
