@@ -4,21 +4,29 @@ scalar DateTime
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-type Query {
-    users: [User!]! @paginate(type: "paginator", model: "App\\Models\\User")
-    user(id: ID @eq): User @find(model: "App\\Models\\User")
-}
-
-# Quotations
-
 type Quotation {
     quote: String!
     author: String!
 }
 
-type Query {
-    Quotation: Quotation
+type Task {
+    task: String!
+    status: Boolean!
+    onDate: DateTime!
+    user_id: Int!
 }
 
-#
+input TaskInput {
+    task: String! @rules(apply: ["required"], attribute: "task")
+}
+
+type Query {
+    Tasks: [Task!]! @all
+    Quotation: Quotation @guard
+}
+
+type Mutation {
+    CreateTask(input: TaskInput): Task
+}
+
 #import sanctum.graphql
