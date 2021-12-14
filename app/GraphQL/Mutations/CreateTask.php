@@ -4,9 +4,13 @@ namespace App\GraphQL\Mutations;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use \Carbon\Carbon;
+use App\Models\Task;
 
 class CreateTask
 {
+
+
     /**
      * Return a value for the field.
      *
@@ -18,10 +22,21 @@ class CreateTask
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // TODO implement the resolver
+
+        $UserID = $context->user()->id;
+
+        $Task               = new Task;
+        $Task->task         = $args["input"]["task"];
+        $Task->user_id      = $UserID;
+        $Task->onDate       = Carbon::now();
+        $Task->status       = false;
+        $Task->save();
 
         return [
-            "task" => $args["input"]["task"]
+            "task"      => $Task->task,
+            "status"    => false,
+            "user_id"   => $UserID,
+            "onDate"    => $Task->onDate
         ];
     }
 }

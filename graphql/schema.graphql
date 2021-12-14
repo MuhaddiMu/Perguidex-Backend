@@ -18,6 +18,7 @@ type Task {
 
 input TaskInput {
     task: String! @rules(apply: ["required"], attribute: "task")
+    # onDate: DateTime! @rules(apply: ["required"], attribute: "date")
 }
 
 type Query {
@@ -26,7 +27,7 @@ type Query {
 }
 
 type Mutation {
-    CreateTask(input: TaskInput): Task
+    CreateTask(input: TaskInput): Task @guard
 }
 
 #import sanctum.graphql
