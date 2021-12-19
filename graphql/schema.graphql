@@ -13,7 +13,7 @@ type Task {
     task: String!
     status: Boolean!
     onDate: DateTime!
-    user_id: Int!
+    user: User! @belongsTo
 }
 
 input TaskInput {
@@ -22,7 +22,7 @@ input TaskInput {
 }
 
 type Query {
-    Tasks: [Task!]! @all
+    Tasks: [Task!]! @guard
     Quotation: Quotation @guard
 }
 
