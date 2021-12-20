@@ -9,7 +9,12 @@ type Quotation {
     author: String!
 }
 
+type Response {
+    status: String!
+}
+
 type Task {
+    id: Int!
     task: String!
     status: Boolean!
     onDate: DateTime!
@@ -28,6 +33,7 @@ type Query {
 
 type Mutation {
     CreateTask(input: TaskInput): Task @guard
+    markTaskComplete(id: Int!): Response @guard
 }
 
 #import sanctum.graphql

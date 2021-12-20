@@ -1,12 +1,12 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Mutations;
 
 use App\Models\Task;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class Tasks
+class MarkTaskComplete
 {
     /**
      * Return a value for the field.
@@ -19,10 +19,13 @@ class Tasks
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $UserID = $context->user()->id;
 
-        $Tasks = Task::where('user_id', $UserID)->where('status', False)->get();
+        // $UserID = $context->user()->id;
+        $TaskID = $args['id'];
 
-        return $Tasks;
+        Task::where('id', $TaskID)->update(['status' => True]);
+
+
+        return ["status" => "success"];
     }
 }
