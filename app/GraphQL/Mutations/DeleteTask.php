@@ -1,13 +1,12 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Mutations;
 
 use App\Models\Task;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Carbon\Carbon;
 
-class Tasks
+class DeleteTask
 {
     /**
      * Return a value for the field.
@@ -20,10 +19,15 @@ class Tasks
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+
+
         $UserID = $context->user()->id;
+        $TaskID = $args['id'];
 
-        $Tasks = Task::where('user_id', $UserID)->where('status', False)->whereDate('onDate', Carbon::now())->where('deleted', False)->get();
-
-        return $Tasks;
+        if (Task::where('id', $TaskID)->where('user_id', $UserID)->update(['deleted' => True])) {
+            return ["status" => "success"];
+        } else {
+            return ["status" => "error"];
+        }
     }
 }

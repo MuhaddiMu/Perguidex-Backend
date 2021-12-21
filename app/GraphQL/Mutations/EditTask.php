@@ -1,13 +1,12 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Mutations;
 
 use App\Models\Task;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Carbon\Carbon;
 
-class Tasks
+class EditTask
 {
     /**
      * Return a value for the field.
@@ -20,10 +19,13 @@ class Tasks
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+
         $UserID = $context->user()->id;
 
-        $Tasks = Task::where('user_id', $UserID)->where('status', False)->whereDate('onDate', Carbon::now())->where('deleted', False)->get();
-
-        return $Tasks;
+        if (Task::where('id', $args["id"])->where('user_id', $UserID)->update(["task" => $args["task"]])) {
+            return ["status" => "success"];
+        } else {
+            return ["status" => "error"];
+        }
     }
 }
