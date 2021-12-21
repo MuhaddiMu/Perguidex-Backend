@@ -33,6 +33,7 @@ class CreateTask
         $Task->save();
 
         return [
+            "id"        => $Task->id,
             "task"      => $Task->task,
             "status"    => false,
             "user_id"   => $UserID,
