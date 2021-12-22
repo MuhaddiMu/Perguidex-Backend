@@ -4,9 +4,9 @@ namespace App\GraphQL\Mutations;
 
 use App\Models\DayReview;
 use App\Exceptions\CustomException;
-use Carbon\Carbon;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use \Carbon\Carbon;
 
 class SaveRating
 {
@@ -21,15 +21,18 @@ class SaveRating
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $UserID = $context->user()->id;
+        $UserID   = $context->user()->id;
+        $Timezone = $context->user()->timezone;
 
-        $Review = DayReview::whereDate('created_at', Carbon::now())->first();
+
+        $Review   = DayReview::whereDate('created_at', Carbon::now($Timezone))->first();
 
         if ($Review === null) {
             $DayReview              = new DayReview;
             $DayReview->user_id     = $UserID;
             $DayReview->rate        = $args["input"]["rate"];
             $DayReview->reason      = $args["input"]["reason"];
+            $DayReview->created_at  = Carbon::now($Timezone);
             $DayReview->save();
 
             return $DayReview;

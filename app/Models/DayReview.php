@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DayReview extends Model
 {
+
+
     use HasFactory;
 
     public function user()

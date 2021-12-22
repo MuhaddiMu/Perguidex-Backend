@@ -21,8 +21,9 @@ class TodayRating
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $UserID = $context->user()->id;
+        $Timezone = $context->user()->timezone;
 
-        $Rating =  DayReview::where('user_id', $UserID)->whereDate('created_at', Carbon::now())->where('deleted', False)->first();
+        $Rating =  DayReview::where('user_id', $UserID)->whereDate('created_at', Carbon::now($Timezone))->where('deleted', False)->first();
 
         return $Rating;
     }

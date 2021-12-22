@@ -54,6 +54,7 @@ type Mutation {
     markTaskComplete(id: Int!): Response @guard
     DeleteTask(id: Int!): Response @guard
     EditTask(id: Int!, task: String!): Response @guard
+    register(input: RegisterInput @spread): RegisterResponse!
 }
 
 #import sanctum.graphql

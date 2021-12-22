@@ -177,10 +177,6 @@ extend type Mutation {
         @field(
             resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Logout"
         )
-    register(input: RegisterInput @spread): RegisterResponse!
-        @field(
-            resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Register"
-        )
     verifyEmail(input: VerifyEmailInput! @spread): EmailVerificationResponse!
         @field(
             resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\VerifyEmail"

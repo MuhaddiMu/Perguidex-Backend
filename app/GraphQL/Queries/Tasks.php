@@ -6,6 +6,7 @@ use App\Models\Task;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class Tasks
 {
@@ -21,8 +22,9 @@ class Tasks
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $UserID = $context->user()->id;
+        $Timezone = $context->user()->timezone;
 
-        $Tasks = Task::where('user_id', $UserID)->where('status', False)->whereDate('onDate', Carbon::now())->where('deleted', False)->get();
+        $Tasks  = Task::where('user_id', $UserID)->where('status', False)->whereDate('onDate', Carbon::now($Timezone))->where('deleted', False)->get();
 
         return $Tasks;
     }
