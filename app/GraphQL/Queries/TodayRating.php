@@ -1,16 +1,14 @@
 <?php
 
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Queries;
 
+use App\Models\DayReview;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use \Carbon\Carbon;
-use App\Models\Task;
 
-class CreateTask
+class TodayRating
 {
-
-
     /**
      * Return a value for the field.
      *
@@ -22,22 +20,10 @@ class CreateTask
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-
         $UserID = $context->user()->id;
 
-        $Task               = new Task;
-        $Task->user_id      = $UserID;
-        $Task->task         = $args["input"]["task"];
-        $Task->onDate       = Carbon::now();
-        $Task->status       = false;
-        $Task->save();
+        $Rating =  DayReview::where('user_id', $UserID)->whereDate('created_at', Carbon::now())->where('deleted', False)->first();
 
-        return [
-            "id"        => $Task->id,
-            "task"      => $Task->task,
-            "status"    => false,
-            "user_id"   => $UserID,
-            "onDate"    => $Task->onDate
-        ];
+        return $Rating;
     }
 }

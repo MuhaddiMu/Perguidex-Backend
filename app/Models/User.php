@@ -50,4 +50,9 @@ class User extends Authenticatable implements HasApiTokensContract
     {
         return $this->hasMany(Task::class, 'user_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Task::class, 'user_id');
+    }
 }

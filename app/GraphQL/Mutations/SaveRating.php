@@ -2,15 +2,14 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\DayReview;
+use App\Exceptions\CustomException;
+use Carbon\Carbon;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use \Carbon\Carbon;
-use App\Models\Task;
 
-class CreateTask
+class SaveRating
 {
-
-
     /**
      * Return a value for the field.
      *
@@ -22,22 +21,23 @@ class CreateTask
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-
         $UserID = $context->user()->id;
 
-        $Task               = new Task;
-        $Task->user_id      = $UserID;
-        $Task->task         = $args["input"]["task"];
-        $Task->onDate       = Carbon::now();
-        $Task->status       = false;
-        $Task->save();
+        $Review = DayReview::whereDate('created_at', Carbon::now())->first();
 
-        return [
-            "id"        => $Task->id,
-            "task"      => $Task->task,
-            "status"    => false,
-            "user_id"   => $UserID,
-            "onDate"    => $Task->onDate
-        ];
+        if ($Review === null) {
+            $DayReview              = new DayReview;
+            $DayReview->user_id     = $UserID;
+            $DayReview->rate        = $args["input"]["rate"];
+            $DayReview->reason      = $args["input"]["reason"];
+            $DayReview->save();
+
+            return $DayReview;
+        } else {
+            throw new CustomException(
+                'Day reviewed already',
+                'User already reviewed a day for today'
+            );
+        }
     }
 }

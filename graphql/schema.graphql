@@ -21,18 +21,36 @@ type Task {
     user: User! @belongsTo
 }
 
+type DayReview {
+    id: Int!
+    rate: String!
+    reason: String!
+    user: User! @belongsTo
+}
+
 input TaskInput {
     task: String! @rules(apply: ["required"], attribute: "task")
     # onDate: DateTime! @rules(apply: ["required"], attribute: "date")
 }
 
+input RatingInput {
+    rate: String!
+        @rules(
+            apply: ["required", "in:0.5,1,1.5,2,2.5,3,3.5,4,4.5,5"]
+            attribute: "rating"
+        )
+    reason: String @rules(apply: [], attribute: "reason")
+}
+
 type Query {
     Tasks: [Task!]! @guard
     Quotation: Quotation @guard
+    TodayRating: DayReview @guard
 }
 
 type Mutation {
-    CreateTask(input: TaskInput): Task @guard
+    CreateTask(input: TaskInput!): Task @guard
+    SaveRating(input: RatingInput!): DayReview @guard
     markTaskComplete(id: Int!): Response @guard
     DeleteTask(id: Int!): Response @guard
     EditTask(id: Int!, task: String!): Response @guard
