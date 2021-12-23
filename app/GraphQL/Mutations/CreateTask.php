@@ -6,7 +6,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use \Carbon\Carbon;
 use App\Models\Task;
-use Timezone;
 
 class CreateTask
 {
@@ -32,14 +31,9 @@ class CreateTask
         $Task->task         = $args["input"]["task"];
         $Task->onDate       = Carbon::now($Timezone);
         $Task->status       = false;
+        $Task->created_at   = Carbon::now($Timezone);
         $Task->save();
 
-        return [
-            "id"        => $Task->id,
-            "task"      => $Task->task,
-            "status"    => false,
-            "user_id"   => $UserID,
-            "onDate"    => $Task->onDate
-        ];
+        return $Task;
     }
 }
