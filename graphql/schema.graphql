@@ -46,6 +46,7 @@ type Query {
     Tasks: [Task!]! @guard
     Quotation: Quotation @guard
     TodayRating: DayReview @guard
+    User: User! @guard
 }
 
 type Mutation {
