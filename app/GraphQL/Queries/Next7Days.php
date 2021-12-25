@@ -1,16 +1,14 @@
 <?php
 
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Queries;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use \Carbon\Carbon;
 use App\Models\Task;
+use Carbon\Carbon;
 
-class CreateTask
+class Next7Days
 {
-
-
     /**
      * Return a value for the field.
      *
@@ -22,18 +20,11 @@ class CreateTask
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-
         $UserID   = $context->user()->id;
         $Timezone = $context->user()->timezone;
 
-        $Task               = new Task;
-        $Task->user_id      = $UserID;
-        $Task->task         = $args["input"]["task"];
-        $Task->onDate       = Carbon::parse($args["input"]["onDate"]);
-        $Task->status       = false;
-        $Task->created_at   = Carbon::now($Timezone);
-        $Task->save();
+        $Tasks    = Task::where('user_id', $UserID)->where('status', False)->whereBetween('onDate', [Carbon::now($Timezone), Carbon::now($Timezone)->addDays(7)])->where('deleted', False)->get();
 
-        return $Task;
+        return $Tasks;
     }
 }

@@ -30,7 +30,7 @@ type DayReview {
 
 input TaskInput {
     task: String! @rules(apply: ["required"], attribute: "task")
-    # onDate: DateTime! @rules(apply: ["required"], attribute: "date")
+    onDate: String! @rules(apply: ["required"], attribute: "date")
 }
 
 input RatingInput {
@@ -44,6 +44,7 @@ input RatingInput {
 
 type Query {
     Tasks: [Task!]! @guard
+    Next7Days: [Task!]! @guard
     Quotation: Quotation @guard
     TodayRating: DayReview @guard
     User: User! @guard
