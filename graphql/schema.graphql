@@ -25,6 +25,7 @@ type DayReview {
     id: Int!
     rate: String!
     reason: String!
+    created_at: DateTime!
     user: User! @belongsTo
 }
 
@@ -49,6 +50,7 @@ type Query {
     TodayRating: DayReview @guard
     User: User! @guard
     GetAllTasks(first: Int!, page: Int!): [Task!]! @guard
+    GetAllReviews(first: Int!, page: Int!): [DayReview!]! @guard
 }
 
 type Mutation {
