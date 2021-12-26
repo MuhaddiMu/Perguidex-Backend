@@ -58,6 +58,7 @@ type Mutation {
     SaveRating(input: RatingInput!): DayReview @guard
     markTaskComplete(id: Int!): Response @guard
     DeleteTask(id: Int!): Response @guard
+    DeleteReview(id: Int!): Response @guard
     EditTask(id: Int!, task: String!): Response @guard
     register(input: RegisterInput @spread): RegisterResponse!
 }

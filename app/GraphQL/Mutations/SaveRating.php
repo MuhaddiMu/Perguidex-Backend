@@ -25,7 +25,7 @@ class SaveRating
         $Timezone = $context->user()->timezone;
 
 
-        $Review   = DayReview::whereDate('created_at', Carbon::now($Timezone))->first();
+        $Review   = DayReview::whereDate('created_at', Carbon::now($Timezone))->where('deleted', False)->first();
 
         if ($Review === null) {
             $DayReview              = new DayReview;
