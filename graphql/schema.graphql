@@ -48,6 +48,7 @@ type Query {
     Quotation: Quotation @guard
     TodayRating: DayReview @guard
     User: User! @guard
+    GetAllTasks(first: Int!, page: Int!): [Task!]! @guard
 }
 
 type Mutation {
