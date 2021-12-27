@@ -43,6 +43,11 @@ input RatingInput {
     reason: String @rules(apply: [], attribute: "reason")
 }
 
+input UserInput {
+    name: String! @rules(apply: ["required"], attribute: "name")
+    timezone: String @rules(apply: ["required"], attribute: "timezone")
+}
+
 type Query {
     Tasks: [Task!]! @guard
     Next7Days: [Task!]! @guard
@@ -60,7 +65,8 @@ type Mutation {
     DeleteTask(id: Int!): Response @guard
     DeleteReview(id: Int!): Response @guard
     EditTask(id: Int!, task: String!): Response @guard
-    register(input: RegisterInput @spread): RegisterResponse!
+    register(input: RegisterInput! @spread): RegisterResponse!
+    UpdateProfile(input: UserInput!): Response @guard
 }
 
 #import sanctum.graphql
