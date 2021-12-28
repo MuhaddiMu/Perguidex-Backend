@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Illuminate\Support\Facades\Hash;
 
 class UpdateProfile
 {
@@ -22,10 +23,45 @@ class UpdateProfile
 
         $UserID   = $context->user()->id;
 
+        $Input = $args["input"];
 
-        if (User::where('id', $UserID)->update(['timezone' => $args["input"]["timezone"], 'name' => $args["input"]["name"]])) {
+        if (isset($Input["name"]) && isset($Input["timezone"])) {
+            // Update Name and Timestamp
 
-            return ["status" => "success"];
+            if (User::where('id', $UserID)->update(['timezone' => $Input["timezone"], 'name' => $Input["name"]])) {
+
+                return ["status" => "success"];
+            } else {
+                return ["status" => "false"];
+            }
+        } else if (isset($Input["email"]) && isset($Input["currentPassword"])) {
+            // Update Email Address
+
+            $User = User::where('id', $UserID)->first();
+
+            if (Hash::check($Input["currentPassword"], $User->password)) {
+
+                $User->email = $Input["email"];
+                $User->save();
+
+                return ["status" => "success"];
+            } else {
+                return ["status" => "error"];
+            }
+        } else if (isset($Input["currentPassword"]) && isset($Input["newPassword"])) {
+            // Update Current Password
+
+            $User = User::where('id', $UserID)->first();
+
+            if (Hash::check($Input["currentPassword"], $User->password)) {
+
+                $User->password = Hash::make($Input["newPassword"]);
+                $User->save();
+
+                return ["status" => "success"];
+            } else {
+                return ["status" => "error"];
+            }
         } else {
             return ["status" => "error"];
         }

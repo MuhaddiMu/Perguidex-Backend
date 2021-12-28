@@ -44,8 +44,12 @@ input RatingInput {
 }
 
 input UserInput {
-    name: String! @rules(apply: ["required"], attribute: "name")
-    timezone: String @rules(apply: ["required"], attribute: "timezone")
+    name: String @rules(apply: [], attribute: "name")
+    timezone: String @rules(apply: [], attribute: "timezone")
+    email: String @rules(apply: ["email"], attribute: "email")
+    currentPassword: String
+        @rules(apply: ["min:8"], attribute: "current password")
+    newPassword: String @rules(apply: ["min:8"], attribute: "new password")
 }
 
 type Query {
