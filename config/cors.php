@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*.perguidex.io:*'],
+    'allowed_origins' => ['*.perguidex.io'],
 
     'allowed_origins_patterns' => [],
 
