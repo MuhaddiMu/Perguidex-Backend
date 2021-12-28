@@ -78,6 +78,8 @@ class Register
         if (!$user instanceof HasApiTokens) {
             throw new HasApiTokensException($user);
         }
+        \Mail::to($args["email"])->send(new \App\Mail\SignupEmail(["name" => $args["name"]]));
+
 
         return [
             'token'  => $user->createToken('default')->plainTextToken,

@@ -174,7 +174,6 @@ extend type Mutation {
             resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Login"
         )
     logout: LogoutResponse!
-        @guard
         @field(
             resolver: "DanielDeWit\\LighthouseSanctum\\GraphQL\\Mutations\\Logout"
         )

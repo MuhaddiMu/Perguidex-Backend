@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://perguidex.io'],
+    'allowed_origins' => ['https://perguidex.io', 'http://localhost:3000'],
 
     'allowed_origins_patterns' => [],
 
