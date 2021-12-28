@@ -135,8 +135,7 @@ enum ForgotPasswordStatus {
 input ResetPasswordInput {
     email: String! @rules(apply: ["email"])
     token: String!
-    password: String! @rules(apply: ["confirmed"])
-    password_confirmation: String!
+    password: String! @rules(apply: [])
 }
 
 type ResetPasswordResponse {
