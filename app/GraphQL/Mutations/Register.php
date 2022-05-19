@@ -79,13 +79,6 @@ class Register
             throw new HasApiTokensException($user);
         }
 
-
-        \Mail::to($args["email"])->send(new \App\Mail\SignupEmail(["name" => $args["name"]]));
-
-        //  Notify the Admin About the New Signup
-        $ToEmail = env('MAIL_OWNER_EMAIL', 'muhaddisshah@gmail.com');
-        \Mail::to($ToEmail)->send(new \App\Mail\NewSignupNotification(["name" => $args["name"], "email" => $args["email"]]));
-
         return [
             'token'  => $user->createToken('default')->plainTextToken,
             'status' => 'SUCCESS',
